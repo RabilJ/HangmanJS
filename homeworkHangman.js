@@ -1,11 +1,12 @@
 var readlineSync = require('readline-sync');
 
-let wordsCollection = ["Zanzibar","Kompot","Jagoda","Wulkan","Drzewo","Jablko","Lampa","Ekler","Miedz","Procesor","Wolowina","Mielizna","Szczyt","Klepisko"];
-
+let wordsCollection = ["Zanzibar","Kompot","Jagoda","Wulkan","Drzewo","Lampa","Ekler","Procesor","Mielizna","Szczyt","Klepisko"];
+const handicap = 5;
 let randomWord = getRandomWord(0,wordsCollection.length,wordsCollection);
 let randomWordArray = changeStringToArray(randomWord);
 let randomWordCharArray = changeStringToChars(randomWord,"-");
-let maxIteration = randomWord.length+5;
+let maxIteration = randomWord.length+handicap;
+let arrayOfMissedLetters = [];
 
 function getRandomWord(min, max,array){
     min = Math.ceil(min);
@@ -28,15 +29,18 @@ function changeStringToChars(word,char){
     }
     return charArray;
 }
-function compareArrays(array1, array2){
-        if(array1[index]!==array2[index]){
+function compareWords(array1, array2){
+        if(array1.toString().replace(/,/g,'')!==array2.toString().replace(/,/g,'')){
             return false
         }
         return true;
 }
+function changeArrayToWord(array){
+    return array.toString().replace(/,/g,'')
+}
 
 
-console.log(randomWord);
+// console.log(randomWord);
 
 
 console.log(`Hasło do odgadnięcia ma ${randomWord.length} liter!`)
@@ -45,22 +49,25 @@ while(maxIteration >= 0){
         console.log("Skończyły Ci się szanse. Spróbuj ponownie!")
         break;
     }
-console.log(`\nMasz ${maxIteration} szans na odgadnięcie hasła!\n${randomWordCharArray}`)
+    if (arrayOfMissedLetters.length>0){
+        console.log(`Wykorzystane litery: ${arrayOfMissedLetters.toString()}`)
+    }
+console.log(`\nMasz ${maxIteration} szans na odgadnięcie hasła!\n`+ changeArrayToWord(randomWordCharArray))
 var letterInput = readlineSync.question("Wpisz litere: ");
 for (let index = 0; index < randomWord.length; index++) {
-    if(letterInput===randomWordArray[index]){
+    if(letterInput.toLowerCase()===randomWordArray[index].toLowerCase()){
         randomWordCharArray[index] = randomWordArray[index];
     }
 }
-    if(compareArrays(randomWordArray, randomWordCharArray)===true){
-        console.log(`GRATULACJE ZGADŁEŚ HASŁO - ${randomWordCharArray}!`)
+    if(compareWords(randomWordArray, randomWordCharArray)===true){
+        console.log(`GRATULACJE ZGADŁEŚ HASŁO - ${changeArrayToWord(randomWordCharArray)}!`)
         break;
         }
     maxIteration--;
 }
 
 
-let word = "Słowo";
+// let word = "S,ł,o,w,o";
 
-console.log(changeStringToArray(word));
-console.log(changeStringToChars(word,"-"));
+// console.log(word.replace(/,/g,''));
+// console.log(changeStringToChars(word,"-"));
