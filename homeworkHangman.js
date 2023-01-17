@@ -27,16 +27,16 @@ function changeStringToChars(word,char){
     for (let index = 0; index < array.length; index++) {
         charArray[index] = char;
     }
-    return charArray;
+        return charArray;
 }
 function compareWords(array1, array2){
-        if(array1.toString().replace(/,/g,'')!==array2.toString().replace(/,/g,'')){
-            return false
-        }
+    if(array1.toString().replace(/,/g,'')!==array2.toString().replace(/,/g,'')){
+        return false
+    }
         return true;
 }
 function changeArrayToWord(array){
-    return array.toString().replace(/,/g,'')
+        return array.toString().replace(/,/g,'')
 }
 
 
